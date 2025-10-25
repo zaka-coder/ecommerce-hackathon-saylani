@@ -63,13 +63,6 @@
 
 	<div class="untree_co-section">
 		<div class="container">
-			<div class="row mb-5">
-				<div class="col-md-12">
-					<div class="border p-4 rounded" role="alert">
-						Returning customer? <a href="#">Click here</a> to login
-					</div>
-				</div>
-			</div>
 			<div class="row">
 				<div class="col-md-6 mb-5 mb-md-0">
 					<h2 class="h3 mb-3 text-black">Billing Details</h2>
@@ -305,23 +298,19 @@
 									</thead>
 									<tbody>
 										<tr>
-											<td>Top Up T-Shirt <strong class="mx-2">x</strong> 1</td>
-											<td>$250.00</td>
-										</tr>
-										<tr>
-											<td>Polo Shirt <strong class="mx-2">x</strong> 1</td>
-											<td>$100.00</td>
-										</tr>
-										<tr>
 											<td class="text-black font-weight-bold"><strong>Cart Subtotal</strong></td>
-											<td class="text-black">$350.00</td>
+											<td class="text-black" id="checkout-subtotal">$0.00</td>
 										</tr>
 										<tr>
 											<td class="text-black font-weight-bold"><strong>Order Total</strong></td>
-											<td class="text-black font-weight-bold"><strong>$350.00</strong></td>
+											<td class="text-black font-weight-bold"><strong
+													id="checkout-total">$0.00</strong></td>
 										</tr>
 									</tbody>
 								</table>
+
+								<!-- include shared script so checkout totals can be populated from localStorage -->
+
 
 								<div class="border p-3 mb-3">
 									<h3 class="h6 mb-0"><a class="d-block" data-bs-toggle="collapse"
@@ -491,7 +480,7 @@
 	<!-- End Footer Section -->
 
 
-
+	<script src="js/script.js"></script>
 	<script src="js/bootstrap.bundle.min.js"></script>
 	<script src="js/tiny-slider.js"></script>
 	<script src="js/custom.js"></script>

@@ -282,6 +282,26 @@ document.addEventListener('click', function (e) {
         return;
     }
 
+    // If user clicks Proceed To Checkout link from cart page, first persist any changed quantities
+    const checkoutLink = e.target.closest && e.target.closest('a[href="checkout.html"], a#checkout-btn');
+    if (checkoutLink) {
+        const rows = document.querySelectorAll('.site-blocks-table table tbody tr');
+        const cart = getCart();
+        rows.forEach(row => {
+            const id = row.dataset.id;
+            if (!id) return;
+            const input = row.querySelector('.quantity-amount');
+            if (!input) return;
+            const v = parseInt(input.value, 10) || 0;
+            const item = findCartItem(cart, id);
+            if (item) item.qty = v;
+        });
+        const cleaned = cart.filter(i => i.qty && i.qty > 0);
+        saveCart(cleaned);
+        // allow default navigation to checkout
+        return;
+    }
+
     const productItem = e.target.closest && e.target.closest('.product-item');
     if (productItem) {
         const id = productItem.dataset.id;
@@ -297,9 +317,33 @@ document.addEventListener('click', function (e) {
     }
 });
 
-// on load update badge and render cart page if present
-document.addEventListener('DOMContentLoaded', function () {
+// initialize cart UI (robust to readyState)
+function initCartUI() {
     updateCartBadge();
     renderCartPage();
-});
+}
+
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initCartUI);
+} else {
+    initCartUI();
+}
+
+// --- Checkout summary rendering ---
+function renderCheckoutSummary() {
+    const subtotalEl = document.getElementById('checkout-subtotal');
+    const totalEl = document.getElementById('checkout-total');
+    if (!subtotalEl || !totalEl) return;
+
+    const cart = getCart();
+    const subtotal = cart.reduce((s, i) => s + (i.price * (i.qty || 0)), 0);
+    subtotalEl.textContent = `$${subtotal.toFixed(2)}`;
+    totalEl.textContent = `$${subtotal.toFixed(2)}`;
+}
+
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', renderCheckoutSummary);
+} else {
+    renderCheckoutSummary();
+}
 
